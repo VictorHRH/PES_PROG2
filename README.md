@@ -40,15 +40,15 @@ most of my presentations from this material).
 
 We will base this course mainly off three different sources.
 
--   For the first part, we will use âAn Introduction to R, Notes on R: A
+-   For the first part, we will use "An Introduction to R, Notes on R: A
     Programming Environment for Data Analysis and Graphics, Version
-    4.1.2â by Venables, Smith and the R core team.
+    4.1.2" by Venables, Smith and the R core team.
 
--   For the second part, we will use âR for Data Science. Import, Tidy,
-    Transform, Visualize and Model Dataâ by Wickham and Grolemund.
+-   For the second part, we will use "R for Data Science. Import, Tidy,
+    Transform, Visualize and Model Data" by Wickham and Grolemund.
 
--   Lastly, we will use âTime Series Analysis and Its Applications, With
-    R Examplesâ by Shumway and Stoffer.
+-   Lastly, we will use "Time Series Analysis and Its Applications, With
+    R Examples" by Shumway and Stoffer.
 
 For other topics, I will provide lecture notes.
 
@@ -57,10 +57,10 @@ For other topics, I will provide lecture notes.
 All communication should be handed by mail. This includes turning up
 your homework and projects.
 
-When writing an email, please include âPES P2, *Subject*â in the subject
-line (e.g.Â PES P2, Homework 1).
+When writing an email, please include "PES P2, *Subject*" in the subject
+line (e.g. PES P2, Homework 1).
 
-Also, please donât forget to mention and copy to each person sending the
+Also, please don't forget to mention and copy to each person sending the
 mail.
 
 When turning up your homework and projects, please consider sending
