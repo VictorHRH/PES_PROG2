@@ -1,0 +1,334 @@
+Part 1: an introduction to R
+========================================================
+author: Victor Ramirez (victorhramirezh@utexas.edu)
+date: January 2022
+autosize: true
+
+What is R?
+========================================================
+- R is an integrated suit of software facilities for data manipulation, calculation and graphical display.
+
+- Can be regarded as the implementation of the S programming language, which was developed at Bell Laboratories by Rick Becker, John Chambers and Allan Wilks.
+
+What is R? (cont.)
+========================================================
+Among other things it has:
+
+- an effective data handling and storage facility,
+- a suite of operators for calculations on arrays, in particular matrices,
+- a large, coherent, integrated collection of intermediate tools for data analysis,
+- graphical facilities for data analysis and display either directly at the computer or on hardcopy, and
+- a well developed, simple and effective programming language (called 'S') which includes
+conditionals, loops, user defined recursive functions and input and output facilities.
+
+What is R? (cont.)
+========================================================
+- R is very much a vehicle for newly developing methods of interactive data analysis.
+
+- It has developed rapidly, and has been extended by a large collection of *packages*.
+
+- However, most programs written in R are essentially ephemeral, written for a single piece of data analysis.
+
+What is R? (cont.)
+========================================================
+- Many people use R as a statistics system.
+
+- There is an important difference in philosophy between S (and hence R) and the other main statistical systems.In S a statistical analysis is normally done as a series of steps, with intermediate results being stored in objects.
+
+- Thus R will give minimal output and store the results in a fit object for subsequent interrogation by further R functions.
+
+RStudio
+========================================================
+- R is the workhorse that actually does the computations; however, we won't be working directly with R.
+
+- Instead, we will use RStudio, which is a nice graphical front-end to R. 
+
+- Technically, RStudio is an integrated development environment (IDE) for R.
+
+It includes 
+- a console, 
+- syntax-highlighting editor that supports direct code execution, 
+- tools for plotting, history, debugging and workspace management.
+
+RStudio (cont.)
+========================================================
+- You won't ever need to launch the R program directly, but it has to be installed on your computer. 
+
+- This is the program you will interact with directly, but it depends "under the hood" on R itself.
+
+Installing R
+========================================================
+- R is freely available at the [R project website.](https://cran.r-project.org/) There the first option will be to download and install R for either Linux, macOS or Windows. Select the appropriate one.
+
+- Then select "install R for the first time".
+
+- There you will get the option to download the latest version (4.1.2 at the moment.)
+
+- Once you've downloaded this file, open it to run the R installer. Follow the instructions on screen. You're done! The R program should now live wherever programs normally live on your hard drive (e.g. in the "Applications" folder on your hard drive).
+
+Installing RStudio
+========================================================
+- After installing R, go to the [RStudio page](https://www.rstudio.com/products/rstudio/).
+
+- There, select *RStudio Desktop* and under *Open Source Edition*, select DOWNLOAD RSTUDIO DESKTOP.
+
+- Run the RStudio Installer. That's it. You should only remember that each time you will open the RStudio program, not R itself.
+
+- You can also watch on the same page a short video titled *Take a tour of RStudio's IDE* explaining some of its characteristics and capabilities.
+
+A sample session
+========================================================
+- Start the HTML interface to on-line help (using a web browser available at your machine). 
+
+```{r, echo = T, eval = F, warnings = F}
+help.start()
+```
+
+- You should briefly explore the features of this facility with the mouse.
+
+A sample session (cont.)
+========================================================
+- Generate two pseudo-random normal vectors of $x-$ and $y-$ coordinates.
+
+```{r}
+x <- rnorm(50)
+head(x)
+```
+
+A sample session (cont.)
+========================================================
+- Generate two pseudo-random normal vectors of *x-* and *y-* coordinates.
+
+```{r}
+y <- rnorm(x)
+head(y)
+summary(y)
+```
+
+A sample session (cont.)
+========================================================
+- Plot the points in the plane. A graphics window will appear automatically.
+
+```{r}
+plot(x,y)
+```
+
+A sample session (cont.)
+========================================================
+- See which R objects are now in the R workspace.
+
+```{r}
+ls()
+```
+
+A sample session (cont.)
+========================================================
+- Remove objects no longer needed. (Clean up).
+
+```{r}
+rm(x, y)
+```
+
+- Check that objects were effectively removed.
+
+```{r}
+ls()
+```
+
+
+A sample session (cont.)
+========================================================
+- Make $x = (1,2,...,20)$
+
+```{r}
+x <- 1:20
+print(x)
+x
+```
+
+A sample session (cont.)
+========================================================
+- A 'weight' vector of standard deviations.
+
+```{r}
+w <- 1 + sqrt(x)/2
+w
+```
+
+A sample session (cont.)
+========================================================
+- Make a *data frame* of two columns, $x$ and $y$, and look at its first few terms.
+
+```{r}
+dummy <- data.frame(x = x, y = x + rnorm(x)*w)
+head(dummy)
+```
+
+A sample session (cont.)
+========================================================
+- Fit a simple linear regression and look at the analysis. With $y$ to the left of the tilde, we are modeling $y$ dependent on $x$.
+
+```{r}
+fm <- lm(y ~ x, data = dummy)
+summary(fm)
+```
+
+A sample session (cont.)
+========================================================
+- Since we know the standard deviations, we can do a weighted regression.
+
+```{r}
+fm1 <- lm(y ~ x, data = dummy, weight = 1/w^2)
+summary(fm1)
+```
+
+A sample session (cont.)
+========================================================
+- Make the columns in the data frame visible as variables.
+```{r}
+attach(dummy)
+```
+
+- Make a nonparametric local regression function.
+```{r}
+lrf <- lowess(x,y)
+```
+
+A sample session (cont.)
+========================================================
+- Standard point plot with the local regression line, the true regression (intercept 0, slope 1, dashed line), the unweighted (black) and the weighted (red) regression lines.
+
+```{r, echo = F}
+plot(x,y)
+lines(x, lrf$y)
+abline(0, 1, lty = 3)
+abline( coef(fm) )
+abline( coef(fm1), col = 'red' )
+```
+
+A sample session (cont.)
+========================================================
+- Remove data frame from the search path.
+
+```{r}
+detach()
+```
+
+- A standard regression diagnostic plot to check for heteroscedasticity. Can you see it?
+
+```{r, echo = F}
+plot(fitted(fm), resid(fm),
+xlab="Fitted values",
+ylab="Residuals",
+main="Residuals vs Fitted")
+```
+
+A sample session (cont.)
+========================================================
+- A normal scores plot to check for skewness, kurtosis and outliers. (Not very useful here.)
+
+```{r}
+qqnorm(resid(fm), main="Residuals Rankit Plot")
+```
+
+A sample session (cont.)
+========================================================
+- Clean up again
+```{r}
+rm(fm, fm1, lrf, x, dummy)
+```
+
+Getting help with functions and features
+========================================================
+- To get more information on any specific named function, for example `solve()`, the command is
+
+```{r, eval = F}
+help(solve)
+```
+
+- An alternative is
+
+```{r, eval = F}
+?solve
+```
+
+Getting help with functions and features (cont.)
+========================================================
+- On most R installations, help is available in HTML format by running
+
+```{r, eval = F}
+help.start()
+```
+
+- Finally, the `help.search()` command (alternatively ??) allows searching for help in various ways (e.g. by topic).
+
+R commands, case sensitivity, etc.
+========================================================
+- Technically, R is an *expression language* with a simple syntax.
+
+- R is case sensitive, so "A" and "a" are different symbols and would refer to different variables.
+
+- The set of symbols which can be used in R names depends on the operating system and the country within which R is being run.
+
+- Normally, all alphanumeric plus "." and "_" are allowed, with the restriction that a name must start with "." or a letter.
+
+- Names are unlimited in length.
+
+R commands, case sensitivity, etc. (cont.)
+========================================================
+- Elementary commands consist of either *expressions* or *assignments*
+
+- *Expressions* given as commands are evaluated, printed (unless specifically made invisible), and the value is lost.
+
+- An *assignment* evaluates an expression and passes the value to a variable. The value is not automatically printed.
+
+R commands, case sensitivity, etc. (cont.)
+========================================================
+- Commands are separated by either a semicolon (';') or by a new line.
+
+- Elementary commands can be grouped together into one compound expression by braces ('{' and '}').
+
+- *Comments* can be put almost anywhere. Starting with a hashmark ('#'), everything to the end of the line is a comment.
+
+- If a command is not complete at the end of a line, R will give a different prompt, by default '+'.
+
+Recall and correction of previous commands
+========================================================
+- The vertical arrow keys on the keyboard can be used to scroll forward and backward through a *command history*.
+
+- Once a command is located in this way, the cursor can be moved within the command using the horizontal arrow keys, and characters can be removed or added.
+
+Executing commands from a file
+========================================================
+- If commands are stored in an external file, say `commands.R` in the working directory work, they may be executed at any time in an R session with the command
+
+```{r, eval = F}
+source('commands.R')
+```
+
+Data permanency and removing objects
+========================================================
+- The entities that R creates and manipulates are known as *objects*.
+
+- These may be variables, arrays of numbers, character strings, functions, or more general structures built from such components.
+
+- During an R session, objects are created and stored by name. The R command `objects()` (alternatively `ls()`) can be used to display the names of most of the objects currently stored within R.
+
+- The collection of objects currently stored is called the *workspace*.
+
+- To remove objects we can use the function `rm()`.
+
+Data permanency and removing objects (cont.)
+========================================================
+- All objects created during an R session can be stored permanently in a file for use in future R sessions.
+
+- At the end of each session, we may save all currently available objects.
+
+- Objects are written to a file called `.RData`.
+
+- Command lines are saved to a file called `.Rhistory`.
+
+- When R is started a later time from the same directory, it reloads the workspace and commands history from these files.
+
+- Recommended to use separate working directories for analysis conducted with R, as objects with common names (e.g., `x` and `y` )may be confounded.
+
